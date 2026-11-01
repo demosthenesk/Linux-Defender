@@ -7,6 +7,8 @@ and ships as a single AppImage for Ubuntu 24.04 and other recent x86_64 distribu
 **Download:** the latest AppImage is on the [Releases](https://github.com/demosthenesk/Linux-Defender/releases/latest)
 page.
 
+![Linux Defender Dashboard: protection status, quick actions (Quick Scan, System Scan, Custom Scan, Update) and the protection overview](docs/screenshots/dashboard.png)
+
 ## Features
 
 * **Dashboard**: protection status, issues with *Fix* buttons, quick actions and a protection overview
@@ -138,6 +140,7 @@ linux_defender/
   integration.py   autostart, applications menu, file-manager actions
   ui/              Qt Widgets UI: main window, pages, theme, icons
 packaging/         AppRun, launcher, desktop file, icon, build script
+docs/screenshots/  screenshots used in this README
 tests/             headless UI tests (screenshots, switch layout, switch states, notifications, every button, download controls, quarantine, scan controls, quarantine selection, logs, scan lock, scheduled scans, checkbox layout, field widths, ClamAV certificate, Caja integration, single instance)
 ```
 
