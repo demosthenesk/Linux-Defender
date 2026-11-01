@@ -187,8 +187,6 @@ tests/             headless UI tests (screenshots, switch layout, switch states,
 * **1.2.0** — The About page now lists only Linux Defender's own components (ClamAV engine and signatures, Qt, PySide6,
   Python, operating system). Removed all references to other products.
 * **1.1.1** — Fixed on/off switches jumping over their label text when clicked.
-* **1.1.0** — Renamed to Linux Defender and removed the account screens. Settings, signatures and quarantine from
-  1.0.0 move over automatically on first start.
 * **1.0.0** — First release.
 
 ## Licence
