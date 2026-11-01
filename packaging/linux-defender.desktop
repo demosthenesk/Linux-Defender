@@ -1,0 +1,19 @@
+[Desktop Entry]
+Type=Application
+Name=Linux Defender
+GenericName=Antivirus
+Comment=Free antivirus protection — scans, real-time Shield, quarantine
+Exec=linux-defender %F
+Icon=linux-defender
+Terminal=false
+Categories=System;Security;
+Keywords=antivirus;virus;malware;scan;security;clamav;
+Actions=QuickScan;Update;
+
+[Desktop Action QuickScan]
+Name=Quick Scan
+Exec=linux-defender --quick-scan
+
+[Desktop Action Update]
+Name=Update threat signatures
+Exec=linux-defender --update

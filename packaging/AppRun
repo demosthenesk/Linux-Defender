@@ -1,0 +1,22 @@
+#!/bin/sh
+# Linux Defender AppImage entry point
+HERE="$(dirname "$(readlink -f "$0")")"
+export APPDIR="${APPDIR:-$HERE}"
+# extra X11/xcb helper libraries for Qt (only small libs, no glibc/ssl)
+export LD_LIBRARY_PATH="$HERE/usr/lib/extra${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# Qt runs through X11/XWayland so the desktop draws native window decorations
+export QT_QPA_PLATFORM=xcb
+# Ubuntu 24.04 ships Python 3.12; any Python >= 3.9 works with the bundled abi3 PySide6
+PY=""
+for c in /usr/bin/python3.12 python3.13 python3.12 python3.11 python3.10 python3; do
+  if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import sys; sys.exit(sys.version_info < (3, 9))' 2>/dev/null; then
+    PY="$(command -v "$c")"; break
+  fi
+done
+if [ -z "$PY" ]; then
+  MSG="Linux Defender needs Python 3.9 or newer (sudo apt install python3)."
+  echo "$MSG" >&2
+  command -v zenity >/dev/null 2>&1 && zenity --error --text="$MSG" 2>/dev/null
+  exit 1
+fi
+exec "$PY" -s -E "$HERE/usr/lib/linux-defender/launch.py" "$@"
