@@ -1,6 +1,11 @@
-# Linux Defender 1.8.5 — free antivirus for Ubuntu 24.04
+# Linux Defender 1.8.5 — free antivirus for Linux
 
-Linux Defender is a free desktop antivirus for Linux. It's built on the **ClamAV** detection engine and a Qt 6 interface.
+Linux Defender is a free desktop antivirus for Linux. It's built on the **ClamAV** detection engine and a Qt 6 interface,
+and ships as a single AppImage for Ubuntu 24.04 and other recent x86_64 distributions (see
+[Compatibility](#compatibility)).
+
+**Download:** the latest AppImage is on the [Releases](https://github.com/demosthenesk/Linux-Defender/releases/latest)
+page.
 
 ## Features
 
@@ -63,13 +68,36 @@ chmod +x Linux_Defender-1.8.5-x86_64.AppImage
 ```
 
 The AppImage contains Qt 6 (PySide6) and ClamAV 1.5 (clamd, freshclam and the ClamAV root certificate used to verify
-signature databases), so ClamAV doesn't need to be installed. It runs on the Python 3.12 that
-ships with every Ubuntu 24.04 install. On the first run Linux Defender downloads about 230 MB of ClamAV
+signature databases), so ClamAV doesn't need to be installed. It runs on the system's Python (3.9 or newer; Ubuntu
+24.04 ships 3.12). On the first run Linux Defender downloads about 230 MB of ClamAV
 signatures from `database.clamav.net`. While the app is running, `clamd` keeps them in memory, which takes
 roughly 1–1.5 GB of RAM.
 
-AppImages need FUSE 2 on Ubuntu 24.04: `sudo apt install libfuse2t64`.
-On GNOME, the tray icon needs the *Ubuntu AppIndicators* extension, which Ubuntu enables by default.
+AppImages need FUSE 2: `sudo apt install libfuse2t64` (Ubuntu 24.04 and later), `sudo apt install libfuse2` (Debian),
+`sudo dnf install fuse-libs` (Fedora), `sudo pacman -S fuse2` (Arch).
+On GNOME, the tray icon needs the *Ubuntu AppIndicators* extension (enabled by default on Ubuntu; on other
+distributions install *AppIndicator and KStatusNotifierItem Support*).
+
+## Compatibility
+
+The AppImage is built and tested on **Ubuntu 24.04 (x86_64)**. It has two parts with different requirements:
+
+* **Interface** (Qt 6.8 / PySide6, bundled): glibc 2.28 or newer, Python 3.9 or newer, and the usual X11 desktop
+  libraries. On Wayland desktops it runs through XWayland.
+* **Scan engine and updater** (ClamAV 1.5.4, bundled from Ubuntu 24.04): glibc **2.39** or newer, plus these system
+  libraries: OpenSSL 3, `libxml2.so.2`, `libunistring.so.5`, `libpcre2`, `libsystemd`. This part sets the limit.
+
+| Distribution | Status |
+|---|---|
+| Ubuntu 24.04 and later, its flavours (Ubuntu MATE, Kubuntu, Xubuntu, …), Linux Mint 22.x, Pop!_OS 24.04, Zorin OS 18, elementary OS 8, KDE neon | ✅ Supported (tested on Ubuntu 24.04) |
+| Debian 13, Fedora 40 and later | ✅ Expected to work (not tested) |
+| Arch, Manjaro, openSUSE Tumbleweed | ⚠️ The interface works; the scan engine needs `libxml2.so.2`, which newer libxml2 versions renamed (on Arch: `sudo pacman -S libxml2-legacy`) |
+| Ubuntu 22.04, Linux Mint 21, Debian 12, RHEL / Rocky / AlmaLinux 9, Zorin OS 17 | ❌ The interface opens, but scanning and updates don't work (glibc older than 2.39) |
+| Alpine and other musl-based distributions, 32-bit or ARM systems | ❌ Not supported |
+
+If the scan engine can't start, the Dashboard reports it, and `~/.local/share/linux-defender/logs/clamd.stdout.log`
+names the missing library. Older distributions can still use [Run from source](#run-from-source) with their own
+ClamAV packages.
 
 Data locations:
 
